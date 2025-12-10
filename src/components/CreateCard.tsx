@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { createCard } from '../service/cardService';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 interface CreateCardProps {}
 
@@ -57,11 +58,23 @@ const CreateCard: FunctionComponent<CreateCardProps> = () => {
     onSubmit: async (values, { resetForm }) => {
       try {
         const token = sessionStorage.getItem('token');
-        if (!token) return alert('You must be logged in!');
+        if (!token)
+          return Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'You must be logged in!',
+          });
 
-        const res = await createCard(values,token);
-        // setMyCards((prev) => [...prev, res.data]);
-        console.log('Card created successfully', res.data);
+        const res = await createCard(values, token);
+        console.log('Card updated successfully');
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Card Created successfully',
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
         resetForm();
         navigate('/my-cards');
       } catch (err) {
@@ -269,7 +282,7 @@ const CreateCard: FunctionComponent<CreateCardProps> = () => {
         <button
           type='submit'
           className='btn btn-warning mt-3  '
-          onClick={ ()=> navigate(-1)}
+          onClick={() => navigate(-1)}
           disabled={!formik.isValid || !formik.dirty}
         >
           Back

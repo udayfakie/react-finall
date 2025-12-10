@@ -2,13 +2,13 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import { deleteCard, getMyCards, likeForCard } from '../service/cardService';
 import Card from '../interface/Card';
 import Navbar from './Navbar';
+import Swal from 'sweetalert2';
 
 const MyCards: FunctionComponent = () => {
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filteredCards, setFilteredCards] =
-      useState<Card[]>(cards);
-    const [myCardsTerm, setMyCardsTerm] = useState<string>('');
+  const [filteredCards, setFilteredCards] = useState<Card[]>(cards);
+  const [myCardsTerm, setMyCardsTerm] = useState<string>('');
 
   const user = JSON.parse(sessionStorage.getItem('userDetails') || '{}');
 
@@ -20,7 +20,7 @@ const MyCards: FunctionComponent = () => {
     }
 
     try {
-      const res = await likeForCard(cardId, token); 
+      const res = await likeForCard(cardId, token);
       setCards((prev) =>
         prev.map((card) =>
           card._id === cardId ? { ...card, likes: res.data.likes } : card
@@ -30,17 +30,15 @@ const MyCards: FunctionComponent = () => {
       console.error(err);
     }
   };
-   useEffect(() => {
-    setFilteredCards(
-      cards.filter((card) => card.title.includes(myCardsTerm))
-    );
+  useEffect(() => {
+    setFilteredCards(cards.filter((card) => card.title.includes(myCardsTerm)));
   }, [cards, myCardsTerm]);
 
   const handleDelete = async (cardId: string) => {
     const token = sessionStorage.getItem('token');
 
     if (!token) {
-      alert('You must be logged in');
+      Swal.fire('You must be logged in');
       return;
     }
 
@@ -49,7 +47,7 @@ const MyCards: FunctionComponent = () => {
       setCards((prev) => prev.filter((card) => card._id !== cardId));
     } catch (err) {
       console.log(err);
-      alert('You cannot delete this card (not owner or not admin)');
+     Swal.fire('You cannot delete this card (not owner or not admin)');
     }
   };
 
@@ -72,10 +70,17 @@ const MyCards: FunctionComponent = () => {
 
   return (
     <>
-      <Navbar setTerm={()=> {''}} setMyCardsTerm={setMyCardsTerm} setFilteredTerm={()=>{''}}/>
-      <div className='container mt-4'>
-        
-        <div className='row'>
+      <Navbar
+        setTerm={() => {
+          ('');
+        }}
+        setMyCardsTerm={setMyCardsTerm}
+        setFilteredTerm={() => {
+          ('');
+        }}
+      />
+      <div className='container mt-4 text-center '>
+        <div className='row '>
           {cards.length > 0 ? (
             filteredCards.map((card) => (
               <div className='col-md-4 mb-4' key={card._id}>
@@ -84,6 +89,11 @@ const MyCards: FunctionComponent = () => {
                     src={card.image?.url}
                     alt={card.image?.alt || 'Card image'}
                     className='card-img-top'
+                    style={{
+                      height: '200px',
+                      width: '100%',
+                      objectFit: 'cover',
+                    }}
                   />
 
                   <div className='card-body'>
@@ -92,29 +102,34 @@ const MyCards: FunctionComponent = () => {
                     <p className='card-text'>{card.address.city}</p>
                     <p className='card-text'>{card.phone}</p>
 
-                    <button
-                      className='btn btn-danger'
+                    <i
                       onClick={() => handleDelete(card._id as string)}
-                    >
-                      Delete
-                    </button>
+                      className=' fa-solid fa-delete-left'
+                      style={{ fontSize: 20 }}
+                    ></i>
+
                     <button
-                      className={`btn ${
-                        card.likes?.includes(user._id)
-                          ? 'btn-danger'
-                          : 'btn-secondary'
-                      } m-2`}
+                    
+                      className='btn m-2'
                       onClick={() => {
                         console.log(card.likes);
-                        
+
                         handleLike(card._id as string);
                       }}
                     >
-                      {card.likes?.includes(user._id) ? (
-                        <i className='fa-solid fa-heart'></i>
-                      ) : (
-                        <i className='fa-regular fa-heart'></i> 
-                      )}
+                      <i
+                        className={
+                          card.likes?.includes(user._id)
+                            ? 'fa-solid fa-heart'
+                            : 'fa-regular fa-heart'
+                        }
+                        style={{
+                          color: card.likes?.includes(user._id)
+                            ? 'red'
+                            : 'gray',
+                          fontSize: 25,
+                        }}
+                      ></i>
                     </button>
                   </div>
                 </div>
@@ -125,7 +140,6 @@ const MyCards: FunctionComponent = () => {
           )}
         </div>
       </div>
-
     </>
   );
 };

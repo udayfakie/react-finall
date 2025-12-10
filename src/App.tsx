@@ -9,23 +9,28 @@ import Sendbox from './components/Sendbox';
 import CreateCard from './components/CreateCard';
 import UpdateCard from './components/UpdateCard';
 import MyCards from './components/MyCards';
+import Footer from './components/Footer';
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path='/' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-
-        <Route path='/update-card/:id' element={<UpdateCard />} />
-        <Route path='/cards' element={<Cards />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/fav' element={<Favorite />} />
-        <Route path='/my-cards' element={<MyCards  />} />
-        <Route path='/sandbox' element={<Sendbox />} />
-        <Route path='/create-card' element={<CreateCard />} />
-        <Route path='*' element={<Pnf />} />
-      </Routes>
+      <div className='d-flex flex-column min-vh-100'>
+        <main className='flex-grow-1'>
+          <Routes>
+            <Route path='/' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/update-card/:id' element={<UpdateCard />} />
+            <Route path='/cards' element={<Cards />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/fav' element={<Favorite />} />
+            <Route path='/my-cards' element={<MyCards />} />
+            <Route path='/sandbox' element={<Sendbox />} />
+            <Route path='/create-card' element={<CreateCard />} />
+            <Route path='*' element={<Pnf />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </Router>
   );
 }

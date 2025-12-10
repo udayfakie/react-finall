@@ -3,10 +3,10 @@ import { FunctionComponent } from 'react';
 import * as yup from 'yup';
 import { checkUser } from '../service/usersService';
 import { Link, useNavigate } from 'react-router-dom';
-import * as jwt_decode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
+import Swal from 'sweetalert2';
 
 interface LoginProps {}
-
 const Login: FunctionComponent<LoginProps> = () => {
   const navigate = useNavigate();
 
@@ -29,14 +29,42 @@ const Login: FunctionComponent<LoginProps> = () => {
           email: values.email,
           password: values.password,
         });
-        if (res.status === 200) {
 
+        if (res.status === 200) {
+          const token = res.data;
+          const user: any = jwtDecode(token);
           sessionStorage.setItem(
             'userDetails',
-            JSON.stringify(jwt_decode.jwtDecode(res.data))
+            JSON.stringify(user)
           );
           sessionStorage.setItem('token', res.data);
-          navigate('/cards');
+
+          if (user.isAdmin) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Welcome Admin User!',
+              text: 'You are logged in as Admin.',
+              timer: 2000,
+              showConfirmButton: false,
+            });
+          } else if (user.isBusiness) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Welcome Business User!',
+              text: 'You are logged in as a Business account.',
+              timer: 2000,
+              showConfirmButton: false,
+            });
+          } else {
+            Swal.fire({
+              icon: 'success',
+              title: 'Welcome!',
+              text: 'You are logged in successfully.',
+              timer: 2000,
+              showConfirmButton: false,
+            });
+          }
+          setTimeout(() => navigate('/cards'), 2000);
         }
       } catch (error) {
         console.log(error);

@@ -1,10 +1,11 @@
-import { FunctionComponent, useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { getCardsById, updateCard } from "../service/cardService";
-import Card from "../interface/Card";
-import Navbar from "./Navbar";
+import { FunctionComponent, useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { getCardsById, updateCard } from '../service/cardService';
+import Card from '../interface/Card';
+import Navbar from './Navbar';
+import Swal from 'sweetalert2';
 
 interface UpdateCardProps {}
 
@@ -14,19 +15,19 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = () => {
   const [loading, setLoading] = useState(false);
 
   const [card, setCard] = useState<Card>({
-    _id: "",
-    title: "",
-    subtitle: "",
-    description: "",
-    web: "",
-    phone: "",
-    email: "",
-    image: { url: "", alt: "" },
+    _id: '',
+    title: '',
+    subtitle: '',
+    description: '',
+    web: '',
+    phone: '',
+    email: '',
+    image: { url: '', alt: '' },
     address: {
-      state: "",
-      country: "",
-      city: "",
-      street: "",
+      state: '',
+      country: '',
+      city: '',
+      street: '',
       houseNumber: 0,
       zip: 0,
     },
@@ -88,20 +89,32 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = () => {
       }),
     }),
     onSubmit: async (values) => {
-      const token = sessionStorage.getItem("token");
-      if (!token) return alert("You must be logged in!");
+      const token = sessionStorage.getItem('token');
+      if (!token)
+        return Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'You must be logged in!',
+        });
 
       try {
         const res = await updateCard(id!, values);
-        alert("Updated successfully!");
-        navigate("/cards");
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Updated successfully!',
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        navigate('/cards');
       } catch (err) {
-        console.log("Error updating card", err);
+        console.log('Error updating card', err);
       }
     },
   });
 
-  if (loading) return <p className="text-center mt-5">Loading...</p>;
+  if (loading) return <p className='text-center mt-5'>Loading...</p>;
 
   return (
     <>
@@ -115,181 +128,182 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = () => {
         setFilteredTerm={() => {
           ('');
         }}
-      />      <div className="container mt-4">
-        <h2 className="text-center display-4">Edit Card</h2>
+      />{' '}
+      <div className='container mt-4'>
+        <h2 className='text-center display-4'>Edit Card</h2>
 
         <form onSubmit={formik.handleSubmit}>
-          <div className="mb-2">
+          <div className='mb-2'>
             <input
-              type="text"
-              name="title"
-              placeholder="Title"
-              className="form-control"
+              type='text'
+              name='title'
+              placeholder='Title'
+              className='form-control'
               value={formik.values.title}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
             {formik.touched.title && formik.errors.title && (
-              <small className="text-danger">{formik.errors.title}</small>
+              <small className='text-danger'>{formik.errors.title}</small>
             )}
           </div>
 
-          <div className="mb-2">
+          <div className='mb-2'>
             <input
-              type="text"
-              name="subtitle"
-              placeholder="Subtitle"
-              className="form-control"
+              type='text'
+              name='subtitle'
+              placeholder='Subtitle'
+              className='form-control'
               value={formik.values.subtitle}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
             {formik.touched.subtitle && formik.errors.subtitle && (
-              <small className="text-danger">{formik.errors.subtitle}</small>
+              <small className='text-danger'>{formik.errors.subtitle}</small>
             )}
           </div>
 
-          <div className="mb-2">
+          <div className='mb-2'>
             <input
-              type="text"
-              name="description"
-              placeholder="Description"
-              className="form-control"
+              type='text'
+              name='description'
+              placeholder='Description'
+              className='form-control'
               value={formik.values.description}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
             {formik.touched.description && formik.errors.description && (
-              <small className="text-danger">{formik.errors.description}</small>
+              <small className='text-danger'>{formik.errors.description}</small>
             )}
           </div>
 
-          <div className="mb-2">
+          <div className='mb-2'>
             <input
-              type="text"
-              name="web"
-              placeholder="Website"
-              className="form-control"
+              type='text'
+              name='web'
+              placeholder='Website'
+              className='form-control'
               value={formik.values.web}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
           </div>
 
-          <div className="mb-2">
+          <div className='mb-2'>
             <input
-              type="text"
-              name="phone"
-              placeholder="Phone"
-              className="form-control"
+              type='text'
+              name='phone'
+              placeholder='Phone'
+              className='form-control'
               value={formik.values.phone}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
           </div>
 
-          <div className="mb-2">
+          <div className='mb-2'>
             <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              className="form-control"
+              type='email'
+              name='email'
+              placeholder='Email'
+              className='form-control'
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
           </div>
 
-          <div className="mb-2">
+          <div className='mb-2'>
             <input
-              type="text"
-              name="image.url"
-              placeholder="Image URL"
-              className="form-control"
+              type='text'
+              name='image.url'
+              placeholder='Image URL'
+              className='form-control'
               value={formik.values.image.url}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
           </div>
 
-          <div className="mb-2">
+          <div className='mb-2'>
             <input
-              type="text"
-              name="image.alt"
-              placeholder="Image Alt"
-              className="form-control"
+              type='text'
+              name='image.alt'
+              placeholder='Image Alt'
+              className='form-control'
               value={formik.values.image.alt}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
           </div>
 
-          <div className="mb-2">
+          <div className='mb-2'>
             <input
-              type="text"
-              name="address.country"
-              placeholder="Country"
-              className="form-control"
+              type='text'
+              name='address.country'
+              placeholder='Country'
+              className='form-control'
               value={formik.values.address.country}
               onChange={formik.handleChange}
             />
           </div>
 
-          <div className="mb-2">
+          <div className='mb-2'>
             <input
-              type="text"
-              name="address.city"
-              placeholder="City"
-              className="form-control"
+              type='text'
+              name='address.city'
+              placeholder='City'
+              className='form-control'
               value={formik.values.address.city}
               onChange={formik.handleChange}
             />
           </div>
 
-          <div className="mb-2">
+          <div className='mb-2'>
             <input
-              type="text"
-              name="address.street"
-              placeholder="Street"
-              className="form-control"
+              type='text'
+              name='address.street'
+              placeholder='Street'
+              className='form-control'
               value={formik.values.address.street}
               onChange={formik.handleChange}
             />
           </div>
 
-          <div className="mb-2">
+          <div className='mb-2'>
             <input
-              type="number"
-              name="address.houseNumber"
-              placeholder="House Number"
-              className="form-control"
+              type='number'
+              name='address.houseNumber'
+              placeholder='House Number'
+              className='form-control'
               value={formik.values.address.houseNumber}
               onChange={formik.handleChange}
             />
           </div>
 
-          <div className="mb-2">
+          <div className='mb-2'>
             <input
-              type="number"
-              name="address.zip"
-              placeholder="ZIP"
-              className="form-control"
+              type='number'
+              name='address.zip'
+              placeholder='ZIP'
+              className='form-control'
               value={formik.values.address.zip}
               onChange={formik.handleChange}
             />
           </div>
 
           <button
-            type="submit"
-            className="btn btn-success me-2"
+            type='submit'
+            className='btn btn-success me-2'
             disabled={!formik.isValid || !formik.dirty}
           >
             Update Card
           </button>
 
           <button
-            type="button"
-            className="btn btn-secondary"
+            type='button'
+            className='btn btn-secondary'
             onClick={() => navigate(-1)}
           >
             Back
