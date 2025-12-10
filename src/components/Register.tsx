@@ -71,7 +71,7 @@ const Register: FunctionComponent<RegisterProps> = () => {
       isBusiness: yup.boolean().required(),
     }),
     onSubmit: (values) => {
-      console.log('Payload to send:', values);
+      console.log('Payload to sent');
       const payload: User = {
         name: {
           first: values.name.first,
