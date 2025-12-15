@@ -1,36 +1,10 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './components/Login';
-import Register from './components/Register';
-import Cards from './components/Cards';
-import Pnf from './components/Pnf';
-import About from './components/About';
-import Favorite from './components/Favorite';
-import Sendbox from './components/Sendbox';
-import CreateCard from './components/CreateCard';
-import UpdateCard from './components/UpdateCard';
-import MyCards from './components/MyCards';
-import Footer from './components/Footer';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Layout from './components/Layout';
 
 function App() {
   return (
     <Router>
-      <div className='d-flex flex-column min-vh-100'>
-        <main className='flex-grow-1'>
-          <Routes>
-            <Route path='/' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/update-card/:id' element={<UpdateCard />} />
-            <Route path='/cards' element={<Cards />} />
-            <Route path='/about' element={<About />} />
-            <Route path='/fav' element={<Favorite />} />
-            <Route path='/my-cards' element={<MyCards />} />
-            <Route path='/sandbox' element={<Sendbox />} />
-            <Route path='/create-card' element={<CreateCard />} />
-            <Route path='*' element={<Pnf />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <Layout />
     </Router>
   );
 }

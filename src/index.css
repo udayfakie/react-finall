@@ -15,3 +15,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.footer-light {
+  background-color: #f8f9fa; 
+  color: #000;
+  padding: 20px 0;
+}
+
+.footer-dark {
+  background-color: #121212; 
+  color: #fff;
+  padding: 20px 0;
+}
+
+.footer-dark a {
+  color: #ffffff !important;
+}
+
+.footer-light a {
+  color: #000 !important;
+}

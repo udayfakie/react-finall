@@ -5,6 +5,7 @@ interface NavbarProps {
   setTerm: (str: string) => void;
   setMyCardsTerm: (str: string) => void;
   setFilteredTerm: (str: string) => void;
+  
 }
 
 const Navbar: FunctionComponent<NavbarProps> = ({ setTerm ,setMyCardsTerm,setFilteredTerm}) => {
@@ -25,6 +26,15 @@ const Navbar: FunctionComponent<NavbarProps> = ({ setTerm ,setMyCardsTerm,setFil
         <NavLink className='navbar-brand fw-bold' to='/cards'>
           BScard
         </NavLink>
+
+
+{/* <button
+        className="btn btn-outline-secondary"
+        onClick={() => setDarkMode(!darkMode)}
+      >
+        {darkMode ? "☀️ Light" : "🌙 Dark"}
+      </button> */}
+
 
         <button
           className='navbar-toggler'

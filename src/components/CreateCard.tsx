@@ -78,7 +78,12 @@ const CreateCard: FunctionComponent<CreateCardProps> = () => {
         resetForm();
         navigate('/my-cards');
       } catch (err) {
-        console.log('Error creating card', err);
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'You are not allowed!',
+          });
+        console.log('Error creating card you must register as a business !', err);
       }
     },
   });
@@ -195,7 +200,6 @@ const CreateCard: FunctionComponent<CreateCardProps> = () => {
             </div>
           </div>
 
-          {/* Right Column */}
           <div className='col-md-6'>
             <div className='mb-2'>
               <textarea
@@ -283,7 +287,6 @@ const CreateCard: FunctionComponent<CreateCardProps> = () => {
           type='submit'
           className='btn btn-warning mt-3  '
           onClick={() => navigate(-1)}
-          disabled={!formik.isValid || !formik.dirty}
         >
           Back
         </button>

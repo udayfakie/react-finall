@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import { deleteCard, getAllCards } from '../service/cardService';
+import { deleteCard, getAllCards, likeForCard } from '../service/cardService';
 import Navbar from './Navbar';
 import Card from '../interface/Card';
 import { useNavigate } from 'react-router-dom';
@@ -13,20 +13,46 @@ const Cards: FunctionComponent<CardsProps> = () => {
   const [cardChanged, setCardChanged] = useState<boolean>(false);
   const [cardsfiltered, setCardsfiltered] = useState<Card[]>(cardsData);
   const [filteredTerm, setFilteredTerm] = useState<string>('');
+
   const navigate = useNavigate();
+
+  const user = JSON.parse(sessionStorage.getItem('userDetails') || '{}');
+
+  const handleLike = async (cardId: string) => {
+    const token = sessionStorage.getItem('token');
+    if (!token || !user._id) {
+      Swal.fire('You must be logged in');
+      return;
+    }
+
+    try {
+      await likeForCard(cardId, token);
+
+      setCardsData((prev) =>
+        prev.map((card) =>
+          card._id === cardId
+            ? {
+                ...card,
+                likes: card.likes?.includes(user._id)
+                  ? card.likes.filter((id) => id !== user._id)
+                  : [...(card.likes || []), user._id],
+              }
+            : card
+        )
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     getAllCards()
       .then((res) => {
-        setCardsData(res.data);
-
+        setCardsData(res.data.slice(0, 6));
         setIsLoading(false);
-
-        console.log(res.data);
       })
       .catch((err) => {
         setIsLoading(false);
-
         console.log(err);
       });
   }, [cardChanged]);
@@ -61,6 +87,8 @@ const Cards: FunctionComponent<CardsProps> = () => {
   return (
     <>
       <Navbar
+     
+ 
         setTerm={() => {
           ('');
         }}
@@ -98,7 +126,7 @@ const Cards: FunctionComponent<CardsProps> = () => {
                       <p className='card-text'>
                         address: {card.address.street}
                       </p>
-                      <div className='d-flex gap-3 justify-content-center'>
+                      <div className='d-flex gap-3 justify-content-center align-items-center'>
                         <i
                           style={{ fontSize: 25 }}
                           className='fa-solid fa-user-xmark text-danger'
@@ -124,15 +152,29 @@ const Cards: FunctionComponent<CardsProps> = () => {
                             navigate(`/update-card/${card._id}`);
                           }}
                         ></i>
-                        <i
-                          style={{ color: 'red', fontSize: 25 }}
-                          className='fa-solid fa-heart'
-                        ></i>
 
-                        <i
-                          style={{ fontSize: 25 }}
-                          className='fa-sharp-duotone fa-solid fa-phone-flip'
-                        ></i>
+                        <button
+                          className='btn '
+                          onClick={() => {
+                            handleLike(card._id as string);
+                          }}
+                        >
+                          <i
+                            className={
+                              card.likes?.includes(user._id)
+                                ? 'fa-solid fa-heart'
+                                : 'fa-regular fa-heart'
+                            }
+                            style={{
+                              color: card.likes?.includes(user._id)
+                                ? 'red'
+                                : 'gray',
+                              fontSize: 25,
+                            }}
+                          ></i>
+                        </button>
+
+                     
                       </div>
                     </div>
                   </div>
