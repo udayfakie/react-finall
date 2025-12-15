@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import Navbar from './Navbar';
-import { getMyCards, likeForCard } from '../service/cardService';
+import { getAllCards, getMyCards, likeForCard } from '../service/cardService';
 import Card from '../interface/Card';
 import Swal from 'sweetalert2';
 
@@ -14,6 +14,15 @@ const Favorite: FunctionComponent<FavoriteProps> = () => {
   const [loading, setLoading] = useState(true);
 
   const user = JSON.parse(sessionStorage.getItem('userDetails') || '{}');
+  useEffect(() => {
+  getAllCards().then((res) => {
+    const likedOnly = res.data.filter((card: Card) =>
+      card.likes?.includes(user._id)
+    );
+    setLikedCards(likedOnly);
+  });
+}, []);
+
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
