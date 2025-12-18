@@ -26,16 +26,6 @@ const Navbar: FunctionComponent<NavbarProps> = ({ setTerm ,setMyCardsTerm,setFil
         <NavLink className='navbar-brand fw-bold' to='/cards'>
           BScard
         </NavLink>
-
-
-{/* <button
-        className="btn btn-outline-secondary"
-        onClick={() => setDarkMode(!darkMode)}
-      >
-        {darkMode ? "☀️ Light" : "🌙 Dark"}
-      </button> */}
-
-
         <button
           className='navbar-toggler'
           type='button'
@@ -101,7 +91,6 @@ const Navbar: FunctionComponent<NavbarProps> = ({ setTerm ,setMyCardsTerm,setFil
               Logout
             </button>
           </div>
-          {/* <i className="fa-regular fa-user fs-4 ms-2"></i> */}
         </div>
       </div>
     </nav>

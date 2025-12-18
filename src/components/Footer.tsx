@@ -2,6 +2,7 @@ import { FunctionComponent, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Map from './Map';
 
 interface FooterProps {}
 
@@ -57,6 +58,7 @@ const Footer: FunctionComponent<FooterProps> = () => {
             <FontAwesomeIcon icon={darkMode ? faSun : faMoon} />
           </button>
         </div>
+        <Map />
       </div>
     </footer>
   );
