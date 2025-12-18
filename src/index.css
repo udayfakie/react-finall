@@ -1,5 +1,7 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css";
+@import "leaflet/dist/leaflet.css";
+
 
 body {
   margin: 0;

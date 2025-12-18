@@ -3,14 +3,14 @@ import Card from '../interface/Card';
 import Swal from 'sweetalert2';
 import Navbar from './Navbar';
 
-const Sendbox: FunctionComponent = () => {
+const Sandbox: FunctionComponent = () => {
   const user = JSON.parse(sessionStorage.getItem('userDetails') || '{}');
 
   const [demoCard, setDemoCard] = useState<Card>({
     _id: 'sandbox-card',
-    title: 'Demo Business',
+    title: ' Business Card',
     subtitle: 'Sandbox Card',
-    description: 'This is a sandbox test card',
+    description: 'This is a sandbox card',
     phone: '050-0000000',
     email: 'demo@bcard.com',
     address: {
@@ -85,17 +85,8 @@ const Sendbox: FunctionComponent = () => {
       </div>
 
       <hr />
-
-      {/* <div className="text-center">
-        <h6>Dev Info</h6>
-        <p>User ID: {user._id || 'Not logged in'}</p>
-        <p>
-          Token:{' '}
-          {sessionStorage.getItem('token') ? '✅ Exists' : '❌ Missing'}
-        </p>
-      </div> */}
     </div>
   );
 };
 
-export default Sendbox;
+export default Sandbox;
